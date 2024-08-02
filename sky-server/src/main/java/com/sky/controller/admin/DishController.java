@@ -3,6 +3,8 @@ package com.sky.controller.admin;
 
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
+import com.sky.entity.Category;
+import com.sky.entity.Dish;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.RecursiveTask;
 
 /**
  * 菜品管理
@@ -105,5 +108,18 @@ public class DishController {
     public Result startOrStop(@PathVariable("status") Integer status, Long id){
         dishService.startOrStop(status, id);
         return Result.success();
+    }
+
+    /**
+     * 根据分类id查询菜品
+     * @param categoryId
+     * @return
+     */
+    @GetMapping("/list")
+    @ApiOperation("根据分类id查询菜品")
+    public Result<List<Dish>> list(Long categoryId){
+        log.info("根据分类id查询菜品：{}", categoryId);
+        List<Dish> dishes = dishService.list(categoryId);
+        return Result.success(dishes);
     }
 }
